@@ -3,6 +3,8 @@
 
 ![状态](https://img.shields.io/badge/状态-可用模板-success) ![Next.js](https://img.shields.io/badge/Next.js-16-black) ![React](https://img.shields.io/badge/React-19-149eca) ![Node](https://img.shields.io/badge/Node-22.x-339933) ![部署](https://img.shields.io/badge/部署-Vercel%20%7C%20EdgeOne-blue)
 
+在线预览： [https://academic-homepage-template-orpin.vercel.app/](https://academic-homepage-template-orpin.vercel.app/)
+
 这是一个中英双语主页模板，适用于个人学术主页、实验室主页、技术作品集主页与研究项目展示页。你不需要先改代码，可以先从内容文件直接开始。
 
 ## 最简单上手流程（推荐）

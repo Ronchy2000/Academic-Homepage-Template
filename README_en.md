@@ -4,6 +4,8 @@
 
 ![Status](https://img.shields.io/badge/status-template%20ready-success) ![Next.js](https://img.shields.io/badge/Next.js-16-black) ![React](https://img.shields.io/badge/React-19-149eca) ![Node](https://img.shields.io/badge/Node-22.x-339933) ![Deploy](https://img.shields.io/badge/deploy-Vercel%20%7C%20EdgeOne-blue)
 
+Live demo: [https://academic-homepage-template-orpin.vercel.app/](https://academic-homepage-template-orpin.vercel.app/)
+
 This repository is a bilingual homepage template for personal academic sites, lab pages, technical portfolios, and project showcases. You can complete most customization by editing content files directly.
 
 ## Simplest Getting-Started Flow (Recommended)
