@@ -1,0 +1,13 @@
+{
+  "_meta": {
+    "description": "Global site-level settings. Use this file to switch between bilingual and single-language modes without editing code.",
+    "fields": {
+      "i18n.mode": "One of: bilingual, en-only, zh-only",
+      "i18n.primaryLocale": "In bilingual mode: set en or zh to force the default locale (browser-language detection is disabled). Leave it empty to enable browser-language auto-detection on first visit."
+    }
+  },
+  "i18n": {
+    "mode": "bilingual",
+    "primaryLocale": ""
+  }
+}

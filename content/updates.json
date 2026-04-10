@@ -1,0 +1,58 @@
+{
+  "_meta": {
+    "description": "Recent updates shown on the Home page quick feed.",
+    "fields": {
+      "updates": "Array of { date, type, title, summary, link }"
+    }
+  },
+  "en": {
+    "updates": [
+      {
+        "date": "2026-04-08",
+        "type": "Template",
+        "title": "Replaced profile content with bilingual example data",
+        "summary": "Use this feed manually or let GitHub Actions overwrite it from recent commits.",
+        "link": "#"
+      },
+      {
+        "date": "2026-04-07",
+        "type": "Docs",
+        "title": "Added setup and deployment guides",
+        "summary": "README and docs now explain content editing, Vercel deployment, and optional automation.",
+        "link": "#"
+      },
+      {
+        "date": "2026-04-06",
+        "type": "Assets",
+        "title": "Swapped personal avatar and CV for placeholders",
+        "summary": "Replace the sample assets under public/images and public/files with your own materials.",
+        "link": "#"
+      }
+    ]
+  },
+  "zh": {
+    "updates": [
+      {
+        "date": "2026-04-08",
+        "type": "模板",
+        "title": "已将个人资料替换为中英双语示例数据",
+        "summary": "你可以手动维护该动态列表，也可以启用 GitHub Actions 自动覆盖。",
+        "link": "#"
+      },
+      {
+        "date": "2026-04-07",
+        "type": "文档",
+        "title": "新增安装与部署说明",
+        "summary": "README 与 docs 已覆盖内容维护、Vercel 部署和可选自动化设置。",
+        "link": "#"
+      },
+      {
+        "date": "2026-04-06",
+        "type": "资源",
+        "title": "已将头像与简历替换为占位文件",
+        "summary": "请将 public/images 和 public/files 下的示例资源替换为你自己的文件。",
+        "link": "#"
+      }
+    ]
+  }
+}
