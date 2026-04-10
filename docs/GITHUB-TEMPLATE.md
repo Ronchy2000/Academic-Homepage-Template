@@ -4,6 +4,22 @@
 
 <a id="zh-start"></a>
 
+### 0. 最简单 5 步
+
+1. 在 GitHub 点 `Use this template`
+2. 在你自己的仓库里先改 [../content/site.json](../content/site.json)、[../content/profile.json](../content/profile.json)、[../content/pages/home.json](../content/pages/home.json)
+3. push 到你自己的仓库
+4. 在 Vercel 选择该仓库并部署
+
+可选补充（仅在你想本地预览时）：
+
+```bash
+git clone <你的仓库地址>
+cd <你的仓库名>
+npm ci
+npm run dev
+```
+
 ### 1. 根目录哪些文件要提交到 GitHub
 
 要提交。下面这些文件属于项目配置，用户下载后需要它们才能正常运行：
@@ -109,6 +125,22 @@
 ---
 
 <a id="en-start"></a>
+
+### 0. Simplest 5-step path
+
+1. Click `Use this template` on GitHub
+2. Edit [../content/site.json](../content/site.json), [../content/profile.json](../content/profile.json), and [../content/pages/home.json](../content/pages/home.json) in your own repository
+3. Push to your own repository
+4. Choose that repository in Vercel and deploy
+
+Optional (only if you want local preview):
+
+```bash
+git clone <your-repository-url>
+cd <your-repository-name>
+npm ci
+npm run dev
+```
 
 ### 1. Which root files should be committed
 

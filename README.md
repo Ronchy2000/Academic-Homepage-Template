@@ -5,12 +5,27 @@
 
 这是一个中英双语主页模板，适用于个人学术主页、实验室主页、技术作品集主页与研究项目展示页。你不需要先改代码，可以先从内容文件直接开始。
 
-## 第一次使用：按这个顺序做
+## 最简单上手流程（推荐）
 
-1. 安装并启动项目：看 [安装指南](./docs/INSTALLATION.md)
-2. 配置站点语言模式：改 [content/site.json](./content/site.json)
-3. 替换个人信息与主页文案：看 [内容维护指南](./docs/CONTENT-MANAGEMENT.md)
-4. 部署到线上：看 [部署指南](./docs/DEPLOYMENT.md)
+1. 在 GitHub 点击 `Use this template`，创建你自己的仓库
+2. 在你自己的仓库里先改这些内容文件：[content/site.json](./content/site.json)、[content/profile.json](./content/profile.json)、[content/pages/home.json](./content/pages/home.json)
+3. 把修改推送到你自己的 GitHub 仓库
+4. 打开 Vercel，选择你的仓库，点部署
+
+可选补充（仅在你想本地预览时）：
+
+```bash
+git clone <你的仓库地址>
+cd <你的仓库名>
+npm ci
+npm run dev
+```
+
+详细步骤看：
+
+- Template 与 GitHub 设置： [docs/GITHUB-TEMPLATE.md](./docs/GITHUB-TEMPLATE.md)
+- 内容怎么改： [docs/CONTENT-MANAGEMENT.md](./docs/CONTENT-MANAGEMENT.md)
+- 部署怎么做： [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md)
 
 ## 你最需要先理解的配置
 

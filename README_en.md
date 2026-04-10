@@ -6,12 +6,27 @@
 
 This repository is a bilingual homepage template for personal academic sites, lab pages, technical portfolios, and project showcases. You can complete most customization by editing content files directly.
 
-## First-Time Setup Flow
+## Simplest Getting-Started Flow (Recommended)
 
-1. Install and run locally: [Installation Guide](./docs/INSTALLATION.md)
-2. Configure locale behavior: [content/site.json](./content/site.json)
-3. Replace profile and page content: [Content Management Guide](./docs/CONTENT-MANAGEMENT.md)
-4. Deploy to production: [Deployment Guide](./docs/DEPLOYMENT.md)
+1. Click `Use this template` on GitHub to create your own repository
+2. Edit these files in your own repository first: [content/site.json](./content/site.json), [content/profile.json](./content/profile.json), [content/pages/home.json](./content/pages/home.json)
+3. Push your updates to your own GitHub repository
+4. Open Vercel, choose your repository, and deploy
+
+Optional (only if you want local preview):
+
+```bash
+git clone <your-repository-url>
+cd <your-repository-name>
+npm ci
+npm run dev
+```
+
+Detailed guides:
+
+- Template and GitHub setup: [docs/GITHUB-TEMPLATE.md](./docs/GITHUB-TEMPLATE.md)
+- Content editing: [docs/CONTENT-MANAGEMENT.md](./docs/CONTENT-MANAGEMENT.md)
+- Deployment: [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md)
 
 ## Most Important Configuration
 
