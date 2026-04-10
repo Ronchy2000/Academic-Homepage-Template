@@ -1,47 +1,123 @@
-# GitHub 与 Template 发布指南 / GitHub and Template Publishing Guide
+# GitHub 使用方式与模板流程 / GitHub Template Workflow
 
-[ 🇺🇸 English](#en-start) | [ 🇨🇳 中文](#zh-start)
+[🇺🇸 English](#en-start) | [🇨🇳 中文](#zh-start)
 
 <a id="zh-start"></a>
 
-### 0. 最简单 5 步
+## 中文
 
-1. 在 GitHub 点 `Use this template`
-2. 在你自己的仓库里先改 [../content/site.json](../content/site.json)、[../content/profile.json](../content/profile.json)、[../content/pages/home.json](../content/pages/home.json)
-3. push 到你自己的仓库
-4. 在 Vercel 选择该仓库并部署
+这份文档讲的是：
 
-可选补充（仅在你想本地预览时）：
+- 如何使用这个模板创建你自己的仓库
+- 如何选择“只在 GitHub 网页改内容”还是“clone 到本地再改”
+- 哪些文件要保留在仓库里
+
+## 1. 最简单的使用方法：`Use this template`
+
+如果你只是想拿模板做自己的网站，推荐顺序如下：
+
+1. 在 GitHub 点击 `Use this template`
+2. 创建你自己的仓库
+3. 在你自己的仓库里修改内容文件
+4. 将仓库导入 Vercel
+5. 部署上线
+
+这是大多数用户最省事的方式。
+
+## 2. 你可以直接在 GitHub 网页上改文件
+
+很多人第一次使用模板时，不需要先装本地环境。
+
+你可以直接在 GitHub 网页编辑这些文件：
+
+- [../content/site.json](../content/site.json)
+- [../content/profile.json](../content/profile.json)
+- [../content/pages/home.json](../content/pages/home.json)
+- [../content/research.json](../content/research.json)
+- [../content/publications.json](../content/publications.json)
+- [../content/projects.json](../content/projects.json)
+- [../content/timeline.json](../content/timeline.json)
+- [../content/awards.json](../content/awards.json)
+- [../content/updates.json](../content/updates.json)
+
+如果你的改动只是：
+
+- 替换姓名
+- 替换单位
+- 替换论文和项目
+- 改首页文案
+- 改语言配置
+
+那么直接在 GitHub 网页改就够了。
+
+## 3. 什么时候才需要 clone 到本地
+
+建议在这些情况下再 clone：
+
+- 你想本地预览页面
+- 你要新增博客文章
+- 你要替换很多资源文件
+- 你要改代码、样式或组件
+- 你要运行 `npm run build` 做发布前检查
+
+本地基本命令：
 
 ```bash
 git clone <你的仓库地址>
 cd <你的仓库名>
+nvm install
+nvm use
 npm ci
 npm run dev
 ```
 
-### 1. 根目录哪些文件要提交到 GitHub
+详细说明：
 
-要提交。下面这些文件属于项目配置，用户下载后需要它们才能正常运行：
+- [安装指南](./INSTALLATION.md)
+
+## 4. 创建自己的仓库后，建议先改哪些文件
+
+最短路径：
+
+1. [../content/site.json](../content/site.json)
+2. [../content/profile.json](../content/profile.json)
+3. [../content/pages/home.json](../content/pages/home.json)
+4. [../.env.example](../.env.example)
+
+为什么先改这几个：
+
+- `site.json` 决定语言模式和默认语言策略
+- `profile.json` 决定网站是不是已经变成“你的站”
+- `home.json` 决定首页第一屏是不是已经像你本人
+- `.env.example` 告诉你部署时需要填哪些变量
+
+## 5. 哪些文件必须保留在仓库里
+
+下面这些文件不要删，它们属于项目运行和部署所需的配置：
 
 - [../package.json](../package.json)
 - [../package-lock.json](../package-lock.json)
 - [../next.config.mjs](../next.config.mjs)
+- [../edgeone.json](../edgeone.json)
+- [../proxy.ts](../proxy.ts)
+- [../tsconfig.json](../tsconfig.json)
+- [../tailwind.config.ts](../tailwind.config.ts)
 - [../eslint.config.mjs](../eslint.config.mjs)
 - [../postcss.config.mjs](../postcss.config.mjs)
-- [../tailwind.config.ts](../tailwind.config.ts)
-- [../tsconfig.json](../tsconfig.json)
-- [../proxy.ts](../proxy.ts)
-- [../edgeone.json](../edgeone.json)
 - [../next-env.d.ts](../next-env.d.ts)
 - [../.nvmrc](../.nvmrc)
 - [../.env.example](../.env.example)
 
-一句话判断：只要是“项目运行或构建需要的配置文件”，就应该提交。
+特别说明：
 
-### 2. 哪些文件不要提交
+- [../package-lock.json](../package-lock.json) 需要保留
+- [../package.json](../package.json) 也需要保留
 
-这些文件应该留在本地，不要进仓库：
+这两个文件不是二选一，而是都要一起提交。
+
+## 6. 哪些文件不要提交
+
+这些文件通常不应该进仓库：
 
 - `.env`
 - `.env.local`
@@ -49,121 +125,185 @@ npm run dev
 - `.next`
 - `out`
 - `dist`
-- 编辑器临时文件（`.DS_Store`、`.swp` 等）
+- `.DS_Store`
 
-这些规则已经在 [../.gitignore](../.gitignore) 里配置。
+相关规则已经写在：
 
-### 3. `.gitignore` 现在是否齐全
+- [../.gitignore](../.gitignore)
 
-当前项目的忽略规则是可用的，覆盖了常见本地产物和缓存目录。
+## 7. 如果你想把这个仓库继续作为模板公开给别人
 
-补充说明：
+如果你是模板维护者，希望别人也能点 `Use this template`，需要在 GitHub 仓库页面打开：
 
-- [../next-env.d.ts](../next-env.d.ts) 建议提交到仓库
-- 本仓库已调整为不再忽略该文件
+1. `Settings`
+2. `General`
+3. `Template repository`
 
-### 4. 如何把仓库设置成 GitHub Template
+开启后，其他人就可以继续从你的仓库创建副本。
 
-在 GitHub 仓库网页操作：
+## 8. 建议的 GitHub 使用流程
 
-1. 打开仓库 `Settings`
-2. 在 `General` 页面找到 `Template repository`
-3. 勾选 `Template repository`
-4. 保存
+### 方案 A：完全在线改内容
 
-完成后，用户可以通过 `Use this template` 创建自己的仓库副本。
+适合：
 
-### 5. GitHub 建议设置
+- 只想快速上线
+- 不想先装本地环境
 
-建议按下面配置：
+流程：
 
-1. `Settings > General`
-: 仓库描述写清楚用途（双语主页模板、内容文件驱动）
+1. `Use this template`
+2. 在 GitHub 网页改内容
+3. 导入到 Vercel
+4. 看线上结果
 
-2. `Settings > Branches`
-: 保护默认分支，至少开启 PR 合并
+### 方案 B：本地改完再推送
 
-3. `Settings > Actions > General`
-: 允许仓库工作流运行（如果你要用自动更新）
+适合：
 
-4. `Settings > Actions > Workflow permissions`
-: 选择 `Read and write permissions`（自动写回内容需要）
+- 改动比较多
+- 需要本地预览
+- 需要新增博客和资源文件
 
-5. `Settings > Features`
-: 建议开启 `Issues`，用于收集模板使用问题
+流程：
 
-### 6. workflows 要不要说明
+1. `Use this template`
+2. `git clone`
+3. 本地修改
+4. `git push`
+5. 部署
 
-要说明，而且建议在 README 和 docs 都给链接。
+## 9. 发布前建议
 
-原因：
+如果你用了本地环境，建议在推送前执行：
 
-- 用户需要知道自动提交从哪里来
-- 用户需要知道如何关闭自动更新
-- 用户需要知道工作流会改哪些文件
+```bash
+npm run lint
+npm run build
+```
 
-可直接参考：
+然后检查：
 
-- [WORKFLOW-OPTIMIZATION.md](./WORKFLOW-OPTIMIZATION.md)
-- [../.github/workflows/update-content.yml](../.github/workflows/update-content.yml)
-
-### 7. 用户拿到模板后怎么改
-
-给用户的最短路径：
-
-1. 先改 [../content/site.json](../content/site.json)
-2. 再改 [../content/profile.json](../content/profile.json)
-3. 再改 [../content/pages/home.json](../content/pages/home.json)
-4. 再改研究/成果/项目等内容文件
-5. 最后跑 `npm run lint` 和 `npm run build`
-
-完整说明看：
-
-- [CONTENT-MANAGEMENT.md](./CONTENT-MANAGEMENT.md)
-- [PUBLISH-CHECKLIST.md](./PUBLISH-CHECKLIST.md)
+- [发布检查清单](./PUBLISH-CHECKLIST.md)
 
 ---
 
 <a id="en-start"></a>
 
-### 0. Simplest 5-step path
+## English
 
-1. Click `Use this template` on GitHub
-2. Edit [../content/site.json](../content/site.json), [../content/profile.json](../content/profile.json), and [../content/pages/home.json](../content/pages/home.json) in your own repository
-3. Push to your own repository
-4. Choose that repository in Vercel and deploy
+This guide explains:
 
-Optional (only if you want local preview):
+- how to create your own repository from this template
+- when to use GitHub web editing vs local clone
+- which files must stay in the repository
+
+## 1. The simplest way to use this project: `Use this template`
+
+If your goal is simply to build your own website from this template, the recommended path is:
+
+1. click `Use this template` on GitHub
+2. create your own repository
+3. edit the content files in your repository
+4. import the repository into Vercel
+5. deploy
+
+This is the easiest path for most users.
+
+## 2. You can edit files directly on GitHub
+
+Many first-time users do not need local setup at all.
+
+You can edit these files directly in the GitHub web UI:
+
+- [../content/site.json](../content/site.json)
+- [../content/profile.json](../content/profile.json)
+- [../content/pages/home.json](../content/pages/home.json)
+- [../content/research.json](../content/research.json)
+- [../content/publications.json](../content/publications.json)
+- [../content/projects.json](../content/projects.json)
+- [../content/timeline.json](../content/timeline.json)
+- [../content/awards.json](../content/awards.json)
+- [../content/updates.json](../content/updates.json)
+
+If your changes are mostly:
+
+- replacing your name
+- replacing your affiliation
+- updating publications and projects
+- rewriting homepage copy
+- changing locale settings
+
+then GitHub web editing is usually enough.
+
+## 3. When should you clone locally?
+
+Use local clone when:
+
+- you want local preview
+- you want to add blog posts
+- you need to replace many asset files
+- you want to change code, styles, or components
+- you want to run `npm run build` before release
+
+Basic local commands:
 
 ```bash
 git clone <your-repository-url>
 cd <your-repository-name>
+nvm install
+nvm use
 npm ci
 npm run dev
 ```
 
-### 1. Which root files should be committed
+More details:
 
-Commit them. These files are required for running and building the project:
+- [Installation Guide](./INSTALLATION.md)
+
+## 4. Which files should you edit first after creating your repository?
+
+Shortest path:
+
+1. [../content/site.json](../content/site.json)
+2. [../content/profile.json](../content/profile.json)
+3. [../content/pages/home.json](../content/pages/home.json)
+4. [../.env.example](../.env.example)
+
+Why these first:
+
+- `site.json` controls locale mode and first-visit locale behavior
+- `profile.json` makes the site yours
+- `home.json` changes the first screen visitors see
+- `.env.example` shows what deployment variables you must provide
+
+## 5. Which files must stay in the repository?
+
+Do not delete these files. They are part of the project's runtime and deployment setup:
 
 - [../package.json](../package.json)
 - [../package-lock.json](../package-lock.json)
 - [../next.config.mjs](../next.config.mjs)
+- [../edgeone.json](../edgeone.json)
+- [../proxy.ts](../proxy.ts)
+- [../tsconfig.json](../tsconfig.json)
+- [../tailwind.config.ts](../tailwind.config.ts)
 - [../eslint.config.mjs](../eslint.config.mjs)
 - [../postcss.config.mjs](../postcss.config.mjs)
-- [../tailwind.config.ts](../tailwind.config.ts)
-- [../tsconfig.json](../tsconfig.json)
-- [../proxy.ts](../proxy.ts)
-- [../edgeone.json](../edgeone.json)
 - [../next-env.d.ts](../next-env.d.ts)
 - [../.nvmrc](../.nvmrc)
 - [../.env.example](../.env.example)
 
-Rule of thumb: if a file is needed for build/runtime configuration, commit it.
+Important note:
 
-### 2. Which files should not be committed
+- keep [../package-lock.json](../package-lock.json)
+- keep [../package.json](../package.json)
 
-Keep these local:
+These are not alternatives. They belong together in the repository.
+
+## 6. Which files should not be committed?
+
+These files should normally stay out of the repository:
 
 - `.env`
 - `.env.local`
@@ -171,73 +311,63 @@ Keep these local:
 - `.next`
 - `out`
 - `dist`
-- editor temp files (`.DS_Store`, `.swp`, etc.)
+- `.DS_Store`
 
-These are already covered by [../.gitignore](../.gitignore).
+The rules are already defined in:
 
-### 3. Is `.gitignore` complete
+- [../.gitignore](../.gitignore)
 
-The current ignore rules are practical and cover common local artifacts and caches.
+## 7. If you want to keep publishing this repository as a template
 
-Additional note:
+If you are the template maintainer and want other people to keep using `Use this template`, enable this in GitHub:
 
-- [../next-env.d.ts](../next-env.d.ts) should be committed for this project
-- this repository has been updated to stop ignoring that file
+1. `Settings`
+2. `General`
+3. `Template repository`
 
-### 4. How to turn this repository into a GitHub Template
+After that, others can create their own copies from your repository.
 
-In the GitHub repository UI:
+## 8. Recommended GitHub usage paths
 
-1. Open `Settings`
-2. In `General`, find `Template repository`
-3. Enable `Template repository`
-4. Save
+### Path A: Edit content fully online
 
-After this, users can create their own repository via `Use this template`.
+Best for:
 
-### 5. Recommended GitHub settings
+- fastest launch
+- no local setup
 
-1. `Settings > General`
-: keep a clear repository description
+Flow:
 
-2. `Settings > Branches`
-: protect the default branch and require PR merge
+1. `Use this template`
+2. edit content on GitHub
+3. import to Vercel
+4. check the live result
 
-3. `Settings > Actions > General`
-: allow workflows if you need auto updates
+### Path B: Edit locally and push later
 
-4. `Settings > Actions > Workflow permissions`
-: use `Read and write permissions` for content write-back workflows
+Best for:
 
-5. `Settings > Features`
-: enable `Issues` for user support
+- larger changes
+- local preview
+- blog and asset updates
 
-### 6. Should workflows be documented
+Flow:
 
-Yes.
+1. `Use this template`
+2. `git clone`
+3. edit locally
+4. `git push`
+5. deploy
 
-Users need to know:
+## 9. Recommended check before release
 
-- where auto commits come from
-- how to disable automation
-- which files are updated by workflows
+If you use local setup, run:
 
-References:
+```bash
+npm run lint
+npm run build
+```
 
-- [WORKFLOW-OPTIMIZATION.md](./WORKFLOW-OPTIMIZATION.md)
-- [../.github/workflows/update-content.yml](../.github/workflows/update-content.yml)
+Then review:
 
-### 7. What users should edit first
-
-Minimal path for users:
-
-1. [../content/site.json](../content/site.json)
-2. [../content/profile.json](../content/profile.json)
-3. [../content/pages/home.json](../content/pages/home.json)
-4. research/publications/projects content files
-5. run `npm run lint` and `npm run build`
-
-Full guides:
-
-- [CONTENT-MANAGEMENT.md](./CONTENT-MANAGEMENT.md)
-- [PUBLISH-CHECKLIST.md](./PUBLISH-CHECKLIST.md)
+- [Publish Checklist](./PUBLISH-CHECKLIST.md)

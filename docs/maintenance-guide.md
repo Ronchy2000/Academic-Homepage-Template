@@ -1,247 +1,387 @@
 # 维护手册 / Maintenance Guide
 
-[ 🇺🇸 English](#en-start) | [ 🇨🇳 中文](#zh-start)
+[🇺🇸 English](#en-start) | [🇨🇳 中文](#zh-start)
 
 <a id="zh-start"></a>
 
-这份文档给第一次接手仓库的用户使用。内容按实际操作顺序写，直接照做即可。
+## 中文
 
-### 1. 首次接手操作顺序
+这份文档适合这些情况：
 
-1. 安装并启动项目：看 [INSTALLATION.md](./INSTALLATION.md)
-2. 先改语言配置：看 [../content/site.json](../content/site.json)
-3. 替换个人资料：看 [../content/profile.json](../content/profile.json)
-4. 替换头像和 CV：看 [../public/images/avatar-placeholder.svg](../public/images/avatar-placeholder.svg) 和 [../public/files/sample-cv.pdf](../public/files/sample-cv.pdf)
-5. 修改页面文案：看 [../content/pages](../content/pages)
-6. 修改研究、成果、项目、时间线、奖项
-7. 配置环境变量：看 [../.env.example](../.env.example)
-8. 本地执行 `npm run lint` 和 `npm run build`，通过后再部署
+- 网站已经上线
+- 你之后要持续更新内容
+- 你是接手别人网站的人
 
-### 2. 语言配置必须一次讲清楚
+重点不是“怎么第一次部署”，而是“上线后怎么继续维护”。
 
-文件： [../content/site.json](../content/site.json)
+## 1. 日常最常改的内容
 
-默认配置：
+### 个人信息变化
 
-```json
-{
-  "i18n": {
-    "mode": "bilingual",
-    "primaryLocale": ""
-  }
-}
-```
+改：
 
-参数说明：
+- [../content/profile.json](../content/profile.json)
 
-- `mode`：`bilingual`、`en-only`、`zh-only`
-- `primaryLocale`：`en`、`zh`、`""`
+适用场景：
 
-`primaryLocale` 的行为规则：
+- 换学校、换实验室、换公司
+- 改头衔
+- 改社交链接
+- 换头像
+- 换 CV 路径
 
-- `primaryLocale: "en"`：首次访问固定英文，不启用浏览器语言识别
-- `primaryLocale: "zh"`：首次访问固定中文，不启用浏览器语言识别
-- `primaryLocale: ""`：仅在留空时，首次访问才启用浏览器语言识别
+### 首页介绍变化
 
-语言判定优先级：
+改：
 
-1. 先读取 `locale` cookie
-2. 无 cookie 且 `primaryLocale` 为空时，读取浏览器语言
-3. 仍无法判断时回退英文
+- [../content/pages/home.json](../content/pages/home.json)
 
-### 3. 内容文件怎么改
+适用场景：
 
-优先改这些文件：
+- 研究方向变化
+- 首页按钮文案变化
+- 想让首页口吻更简洁
 
-- 站点配置： [../content/site.json](../content/site.json)
-- 个人资料： [../content/profile.json](../content/profile.json)
-- 首页文案： [../content/pages/home.json](../content/pages/home.json)
-- 研究： [../content/research.json](../content/research.json)
-- 成果： [../content/publications.json](../content/publications.json)
-- 项目： [../content/projects.json](../content/projects.json)
-- 时间线： [../content/timeline.json](../content/timeline.json)
-- 奖项： [../content/awards.json](../content/awards.json)
-- 首页动态： [../content/updates.json](../content/updates.json)
-- 博客： [../content/blog/en](../content/blog/en) 和 [../content/blog/zh](../content/blog/zh)
+### 新论文或专利
 
-如果只是修改标题、按钮、描述、列表内容，优先改 `content` 目录，不要先改组件代码。
+改：
 
-### 4. 资源与环境变量
+- [../content/publications.json](../content/publications.json)
 
-头像和 CV：
+### 新项目
 
-- 把头像放到 [../public/images](../public/images)
-- 把 CV 放到 [../public/files](../public/files)
-- 在 [../content/profile.json](../content/profile.json) 中同步修改 `avatar` 和 `cvLink`
+改：
 
-联系页变量：
+- [../content/projects.json](../content/projects.json)
 
-- 必填：`NEXT_PUBLIC_CONTACT_EMAIL_B64`
-- 可选：`NEXT_PUBLIC_CONTACT_MAILTO_SUBJECT`
+### 新博客
 
-示例：
+改：
 
-```bash
-echo -n "hi@example.com" | base64
-```
+- [../content/blog/en](../content/blog/en)
+- [../content/blog/zh](../content/blog/zh)
 
-### 5. 部署建议
+### 新奖项或新经历
 
-- 想要最省事：优先 Vercel
-- 明确要静态导出：EdgeOne Pages
+改：
 
-部署细节看： [DEPLOYMENT.md](./DEPLOYMENT.md)
+- [../content/awards.json](../content/awards.json)
+- [../content/timeline.json](../content/timeline.json)
 
-### 6. 自动化是否需要
+## 2. 语言模式改变时怎么处理
 
-不是必需。
+文件：
 
-- 想手工维护：不启用自动化
-- 想自动更新首页动态和 stars：看 [WORKFLOW-OPTIMIZATION.md](./WORKFLOW-OPTIMIZATION.md)
+- [../content/site.json](../content/site.json)
 
-### 7. 发布前检查
+如果你以后决定：
 
-先执行：
+- 从双语改成单语
+- 从固定英文默认改成浏览器语言识别
+- 从浏览器语言识别改成固定中文默认
 
-```bash
-npm run lint
-npm run build
-```
+都应该先改这个文件。
 
-再逐项检查： [PUBLISH-CHECKLIST.md](./PUBLISH-CHECKLIST.md)
+重点规则：
 
-GitHub 与 Template 发布设置： [GITHUB-TEMPLATE.md](./GITHUB-TEMPLATE.md)
+- `primaryLocale: "en"`：首次访问固定英文
+- `primaryLocale: "zh"`：首次访问固定中文
+- `primaryLocale: ""`：首次访问按浏览器语言自动识别
 
-### 8. 什么时候才需要改代码
+## 3. 联系邮箱或仓库链接变化时怎么处理
 
-只有以下情况建议改 `app` 或 `components`：
+参考：
 
-- 你要新增页面
-- 你要改布局和导航结构
-- 你要新增内容类型
-- 你要接入后端表单
+- [../.env.example](../.env.example)
 
-如果只是改文案、链接、项目、成果，保持 `content` 驱动即可。
+常改变量：
+
+- `NEXT_PUBLIC_CONTACT_EMAIL_B64`
+- `NEXT_PUBLIC_CONTACT_MAILTO_SUBJECT`
+- `NEXT_PUBLIC_REPOSITORY_URL`
+
+注意：
+
+- 环境变量改完后，通常要重新部署
+
+## 4. 更换头像和 CV
+
+头像：
+
+1. 把文件放到 [../public/images](../public/images)
+2. 修改 [../content/profile.json](../content/profile.json) 里的 `avatar`
+
+CV：
+
+1. 把文件放到 [../public/files](../public/files)
+2. 修改 [../content/profile.json](../content/profile.json) 里的 `cvLink`
+
+## 5. 什么时候需要重新部署
+
+只要你改了仓库内容并推送到 GitHub，部署平台一般就会重新构建。
+
+最常见需要重新部署的场景：
+
+- 改了内容文件
+- 改了资源文件
+- 改了环境变量
+- 改了样式或组件
+
+其中：
+
+- 环境变量变化通常一定要重新部署
+
+## 6. 什么时候才需要改代码
+
+只有在这些情况下，才建议改：
+
+- [../app](../app)
+- [../components](../components)
+
+例如：
+
+- 新增页面
+- 修改布局
+- 修改导航结构
+- 加新组件
+- 加后端能力
+
+如果你只是维护内容，优先改：
+
+- [../content](../content)
+- [../public](../public)
+
+## 7. 每次更新后建议检查什么
+
+至少检查：
+
+- 首页是否正常
+- 语言切换是否正常
+- 联系页邮箱是否正常
+- 论文与项目链接是否正常
+- CV 下载是否正常
+
+如果改了语言配置，再重点检查：
+
+- `/`
+- `/en`
+- `/zh`
+
+## 8. 如果接手的是别人的站
+
+建议先按下面顺序看：
+
+1. [../content/site.json](../content/site.json)
+2. [../content/profile.json](../content/profile.json)
+3. [../content/pages/home.json](../content/pages/home.json)
+4. [../.env.example](../.env.example)
+5. [../next.config.mjs](../next.config.mjs)
+6. [../edgeone.json](../edgeone.json)
+
+这样能最快理解：
+
+- 当前是双语还是单语
+- 默认语言怎么设置
+- 站主是谁
+- 邮箱和仓库链接怎么配置
+- 站点部署方式是什么
+
+## 9. 相关文档
+
+- [README](../README.md)
+- [内容维护指南](./CONTENT-MANAGEMENT.md)
+- [部署指南](./DEPLOYMENT.md)
+- [发布检查清单](./PUBLISH-CHECKLIST.md)
 
 ---
 
 <a id="en-start"></a>
 
-This guide is for first-time users of the repository. Follow the steps in order.
+## English
 
-### 1. First-time handover sequence
+This guide is for situations like:
 
-1. Install and run locally: [INSTALLATION.md](./INSTALLATION.md)
-2. Configure locale mode first: [../content/site.json](../content/site.json)
-3. Replace profile data: [../content/profile.json](../content/profile.json)
-4. Replace avatar and CV: [../public/images/avatar-placeholder.svg](../public/images/avatar-placeholder.svg) and [../public/files/sample-cv.pdf](../public/files/sample-cv.pdf)
-5. Update page copy: [../content/pages](../content/pages)
-6. Update research, publications, projects, timeline, and awards
-7. Configure environment variables: [../.env.example](../.env.example)
-8. Run `npm run lint` and `npm run build` before deployment
+- the site is already live
+- you want to keep updating it over time
+- you are taking over someone else's site
 
-### 2. Locale configuration (must be clear)
+The focus here is not “how to deploy for the first time”, but “how to maintain the site after launch”.
 
-File: [../content/site.json](../content/site.json)
+## 1. The content you will update most often
 
-Default:
+### Profile changes
 
-```json
-{
-  "i18n": {
-    "mode": "bilingual",
-    "primaryLocale": ""
-  }
-}
-```
+Edit:
 
-Parameters:
+- [../content/profile.json](../content/profile.json)
 
-- `mode`: `bilingual`, `en-only`, `zh-only`
-- `primaryLocale`: `en`, `zh`, `""`
+Common cases:
 
-`primaryLocale` behavior:
+- changing school, lab, or company
+- updating title
+- updating social links
+- replacing avatar
+- changing CV path
 
-- `primaryLocale: "en"`: first visit is fixed to English, browser-language detection is disabled
-- `primaryLocale: "zh"`: first visit is fixed to Chinese, browser-language detection is disabled
-- `primaryLocale: ""`: browser-language detection runs only when this value is empty
+### Homepage introduction changes
 
-Locale decision order:
+Edit:
 
-1. Read `locale` cookie first
-2. If no cookie and `primaryLocale` is empty, read browser language
-3. Fall back to English if still undecidable
+- [../content/pages/home.json](../content/pages/home.json)
 
-### 3. How to edit content files
+Common cases:
 
-Edit these files first:
+- research focus changes
+- homepage button text changes
+- rewriting the homepage voice
 
-- Site config: [../content/site.json](../content/site.json)
-- Profile: [../content/profile.json](../content/profile.json)
-- Home copy: [../content/pages/home.json](../content/pages/home.json)
-- Research: [../content/research.json](../content/research.json)
-- Publications: [../content/publications.json](../content/publications.json)
-- Projects: [../content/projects.json](../content/projects.json)
-- Timeline: [../content/timeline.json](../content/timeline.json)
-- Awards: [../content/awards.json](../content/awards.json)
-- Recent updates: [../content/updates.json](../content/updates.json)
-- Blog: [../content/blog/en](../content/blog/en) and [../content/blog/zh](../content/blog/zh)
+### New papers or patents
 
-If your change is only text or links, edit `content` files first, not component code.
+Edit:
 
-### 4. Assets and environment variables
+- [../content/publications.json](../content/publications.json)
 
-Avatar and CV:
+### New projects
 
-- Put avatar files in [../public/images](../public/images)
-- Put CV files in [../public/files](../public/files)
-- Update `avatar` and `cvLink` in [../content/profile.json](../content/profile.json)
+Edit:
 
-Contact page variables:
+- [../content/projects.json](../content/projects.json)
 
-- Required: `NEXT_PUBLIC_CONTACT_EMAIL_B64`
-- Optional: `NEXT_PUBLIC_CONTACT_MAILTO_SUBJECT`
+### New blog posts
 
-Example:
+Edit:
 
-```bash
-echo -n "hi@example.com" | base64
-```
+- [../content/blog/en](../content/blog/en)
+- [../content/blog/zh](../content/blog/zh)
 
-### 5. Deployment choice
+### New awards or new timeline entries
 
-- Use Vercel for the simplest setup
-- Use EdgeOne Pages if you need static export deployment
+Edit:
 
-See [DEPLOYMENT.md](./DEPLOYMENT.md).
+- [../content/awards.json](../content/awards.json)
+- [../content/timeline.json](../content/timeline.json)
 
-### 6. Is automation required?
+## 2. How to handle locale-mode changes
 
-No.
+File:
 
-- Use manual updates if you want full control
-- Use automation for recent updates and stars: [WORKFLOW-OPTIMIZATION.md](./WORKFLOW-OPTIMIZATION.md)
+- [../content/site.json](../content/site.json)
 
-### 7. Pre-release checks
+If you later decide to:
 
-Run:
+- switch from bilingual to single-language
+- switch from fixed English default to browser-language detection
+- switch from browser-language detection to fixed Chinese default
 
-```bash
-npm run lint
-npm run build
-```
+start with this file first.
 
-Then follow [PUBLISH-CHECKLIST.md](./PUBLISH-CHECKLIST.md).
+Key rule:
 
-GitHub and template publishing setup: [GITHUB-TEMPLATE.md](./GITHUB-TEMPLATE.md)
+- `primaryLocale: "en"`: first visit is fixed to English
+- `primaryLocale: "zh"`: first visit is fixed to Chinese
+- `primaryLocale: ""`: first visit follows browser language
 
-### 8. When should you edit code?
+## 3. How to update contact email or repository link
 
-Edit `app` or `components` only when:
+Reference:
 
-- you need a new page
-- you need to change layout or navigation
-- you need a new content type
-- you need backend form integration
+- [../.env.example](../.env.example)
 
-For content-only updates, keep using the `content` directory.
+Common variables:
+
+- `NEXT_PUBLIC_CONTACT_EMAIL_B64`
+- `NEXT_PUBLIC_CONTACT_MAILTO_SUBJECT`
+- `NEXT_PUBLIC_REPOSITORY_URL`
+
+Important note:
+
+- after changing environment variables, you usually need a redeploy
+
+## 4. Replacing avatar and CV
+
+Avatar:
+
+1. put the file in [../public/images](../public/images)
+2. update `avatar` in [../content/profile.json](../content/profile.json)
+
+CV:
+
+1. put the file in [../public/files](../public/files)
+2. update `cvLink` in [../content/profile.json](../content/profile.json)
+
+## 5. When do you need to redeploy?
+
+As long as you change repository content and push to GitHub, the platform will usually rebuild automatically.
+
+Common redeploy cases:
+
+- content files changed
+- asset files changed
+- environment variables changed
+- styles or components changed
+
+In particular:
+
+- environment variable changes usually require a redeploy
+
+## 6. When should you edit code?
+
+Only edit:
+
+- [../app](../app)
+- [../components](../components)
+
+when you need things like:
+
+- a new page
+- a new layout
+- changed navigation structure
+- new components
+- backend features
+
+For normal content maintenance, start with:
+
+- [../content](../content)
+- [../public](../public)
+
+## 7. What should you check after each update?
+
+At minimum, check:
+
+- homepage
+- language switching
+- contact-page email
+- publication and project links
+- CV download
+
+If locale settings changed, pay special attention to:
+
+- `/`
+- `/en`
+- `/zh`
+
+## 8. If you are taking over someone else's site
+
+Recommended reading order:
+
+1. [../content/site.json](../content/site.json)
+2. [../content/profile.json](../content/profile.json)
+3. [../content/pages/home.json](../content/pages/home.json)
+4. [../.env.example](../.env.example)
+5. [../next.config.mjs](../next.config.mjs)
+6. [../edgeone.json](../edgeone.json)
+
+This is the fastest way to understand:
+
+- whether the site is bilingual or single-language
+- how first-visit locale is configured
+- who the site belongs to
+- how email and repository links are configured
+- how the site is deployed
+
+## 9. Related guides
+
+- [README_en.md](../README_en.md)
+- [Content Management Guide](./CONTENT-MANAGEMENT.md)
+- [Deployment Guide](./DEPLOYMENT.md)
+- [Publish Checklist](./PUBLISH-CHECKLIST.md)

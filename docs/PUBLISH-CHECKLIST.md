@@ -1,37 +1,33 @@
 # 发布检查清单 / Publish Checklist
 
-[ 🇺🇸 English](#en-start) | [ 🇨🇳 中文](#zh-start)
+[🇺🇸 English](#en-start) | [🇨🇳 中文](#zh-start)
 
 <a id="zh-start"></a>
 
-### 1. 构建检查
+## 中文
 
-```bash
-nvm install && nvm use
-npm ci
-npm run lint
-npm run build
-```
+正式发布前，建议逐项检查下面内容。
 
-要求：无报错。
+## 1. 语言配置已经确认
 
-### 2. 语言配置检查
+文件：
 
-文件： [../content/site.json](../content/site.json)
+- [../content/site.json](../content/site.json)
 
 确认：
 
-- `mode` 是你要的模式
-- `primaryLocale` 符合你的默认语言策略
+- `mode` 是你真正想要的模式
+- `primaryLocale` 是你真正想要的首次访问策略
 
-规则：
+一定要再次确认：
 
-- `"en"` 或 `"zh"`：固定默认语言
-- `""`：仅留空时启用浏览器语言识别
+- `"en"`：首次访问固定英文
+- `"zh"`：首次访问固定中文
+- `""`：首次访问按浏览器语言自动识别
 
-### 3. 内容替换检查
+## 2. 核心内容已经替换为你自己的信息
 
-至少确认这些文件已替换为你的数据：
+至少检查：
 
 - [../content/profile.json](../content/profile.json)
 - [../content/pages/home.json](../content/pages/home.json)
@@ -40,105 +36,166 @@ npm run build
 - [../content/projects.json](../content/projects.json)
 - [../content/timeline.json](../content/timeline.json)
 - [../content/awards.json](../content/awards.json)
+- [../content/updates.json](../content/updates.json)
+
+## 3. 资源文件已经替换
+
+至少检查：
+
 - [../public/images/avatar-placeholder.svg](../public/images/avatar-placeholder.svg)
 - [../public/files/sample-cv.pdf](../public/files/sample-cv.pdf)
 
-### 4. 占位词搜索
+如果你已经换成自己的文件，也别忘了同步检查：
 
-请全文搜索并替换：
+- [../content/profile.json](../content/profile.json) 里的 `avatar`
+- [../content/profile.json](../content/profile.json) 里的 `cvLink`
 
-- `your-handle`
-- `example.com`
-- `Example University`
-- `YOUR_ID`
-- `0000-0000-0000-0000`
+## 4. 环境变量已经配置
+
+参考：
+
+- [../.env.example](../.env.example)
+
+重点检查：
+
+- `NEXT_PUBLIC_CONTACT_EMAIL_B64` 已填写
+- `NEXT_PUBLIC_CONTACT_MAILTO_SUBJECT` 按需填写
+- `NEXT_PUBLIC_REPOSITORY_URL` 按需填写
+
+## 5. 示例占位内容已经清理
+
+建议全文搜索以下关键词并替换：
+
 - `Alex Chen`
 - `陈明远`
+- `Example University`
+- `your-handle`
+- `YOUR_ID`
+- `0000-0000-0000-0000`
+- `example.com`
 
-### 5. 环境变量检查
+## 6. 页面地址检查
 
-参考： [../.env.example](../.env.example)
-
-- `NEXT_PUBLIC_CONTACT_EMAIL_B64` 已设置
-- 需要邮件标题时设置 `NEXT_PUBLIC_CONTACT_MAILTO_SUBJECT`
-- 需要仓库链接时设置 `NEXT_PUBLIC_REPOSITORY_URL`
-
-### 6. 页面地址检查
+至少打开：
 
 - `/`
 - `/en`
-- `/en/`
 - `/zh`
-- `/zh/`
 - `/en/research`
 - `/zh/research`
 - `/en/projects`
 - `/zh/projects`
+- `/en/publications`
+- `/zh/publications`
 - `/en/contact`
 - `/zh/contact`
 - `/en/cv`
 - `/zh/cv`
 
-要求：无 404，首次打开页面语言正确，联系邮箱和 CV 下载正常。
+如果是单语模式，还要确认：
 
-### 7. 平台专项检查
+- 另一种语言不会误生成
+- 语言切换按钮已隐藏
 
-Vercel：
+## 7. 功能检查
 
-- 可直接导入仓库
-- 环境变量已配置
-- 首次打开页面语言正确
+### 联系页
 
-EdgeOne：
+- 邮箱可以显示
+- 复制按钮可用
+- 邮件客户端可以正常打开
 
-- 使用 `EDGEONE=1 npm run build`
+### 简历
+
+- CV 下载链接正确
+
+### 外链
+
+- GitHub / Scholar / ORCID 等链接正确
+
+### 主题
+
+- 首次访问会按系统深浅色展示
+- 手动切换后会记住选择
+
+## 8. 如果你使用了本地环境
+
+建议执行：
+
+```bash
+npm ci
+npm run lint
+npm run build
+```
+
+要求：
+
+- 无错误
+
+## 9. 平台专项检查
+
+### Vercel
+
+- 仓库导入成功
+- 环境变量填写完成
+- 首次访问语言符合预期
+
+### EdgeOne
+
+- 构建命令使用 `EDGEONE=1 npm run build`
 - `/en -> /en/` 正常
 - `/zh -> /zh/` 正常
-- [../edgeone.json](../edgeone.json) 自动改写页面地址的规则存在
+- [../edgeone.json](../edgeone.json) 配置仍然存在
 
-### 8. 仓库最终确认
+## 10. 仓库内容最终确认
 
-- 保留 [../package.json](../package.json)
-- 保留 [../package-lock.json](../package-lock.json)
-- 保留 [../next-env.d.ts](../next-env.d.ts)
-- 保留 [../.nvmrc](../.nvmrc)
-- 保留 [../edgeone.json](../edgeone.json)
-- 不提交隐私信息和临时调试文件
+这些文件应该保留：
 
-Template 发布设置说明： [GITHUB-TEMPLATE.md](./GITHUB-TEMPLATE.md)
+- [../package.json](../package.json)
+- [../package-lock.json](../package-lock.json)
+- [../next.config.mjs](../next.config.mjs)
+- [../proxy.ts](../proxy.ts)
+- [../edgeone.json](../edgeone.json)
+- [../.nvmrc](../.nvmrc)
+- [../.env.example](../.env.example)
+
+这些内容不要提交：
+
+- `.env`
+- `.env.local`
+- `node_modules`
+- `.next`
+- `out`
+- 临时调试文件
 
 ---
 
 <a id="en-start"></a>
 
-### 1. Build checks
+## English
 
-```bash
-nvm install && nvm use
-npm ci
-npm run lint
-npm run build
-```
+Before publishing, review the items below one by one.
 
-Requirement: no errors.
+## 1. Locale settings are confirmed
 
-### 2. Locale checks
+File:
 
-File: [../content/site.json](../content/site.json)
+- [../content/site.json](../content/site.json)
 
 Confirm:
 
-- `mode` matches your target
-- `primaryLocale` matches your default-locale policy
+- `mode` matches your real target
+- `primaryLocale` matches your intended first-visit behavior
 
-Rules:
+Double-check:
 
-- `"en"` or `"zh"`: fixed default locale
-- `""`: browser-language detection runs only when empty
+- `"en"`: first visit is fixed to English
+- `"zh"`: first visit is fixed to Chinese
+- `""`: first visit follows browser language
 
-### 3. Content replacement checks
+## 2. Core content has been replaced with your own information
 
-At least verify these files are replaced with your data:
+At minimum, check:
 
 - [../content/profile.json](../content/profile.json)
 - [../content/pages/home.json](../content/pages/home.json)
@@ -147,69 +204,134 @@ At least verify these files are replaced with your data:
 - [../content/projects.json](../content/projects.json)
 - [../content/timeline.json](../content/timeline.json)
 - [../content/awards.json](../content/awards.json)
+- [../content/updates.json](../content/updates.json)
+
+## 3. Asset files have been replaced
+
+At minimum, check:
+
 - [../public/images/avatar-placeholder.svg](../public/images/avatar-placeholder.svg)
 - [../public/files/sample-cv.pdf](../public/files/sample-cv.pdf)
 
-### 4. Placeholder search
+If you already replaced them, also verify:
 
-Search and replace:
+- `avatar` in [../content/profile.json](../content/profile.json)
+- `cvLink` in [../content/profile.json](../content/profile.json)
 
-- `your-handle`
-- `example.com`
-- `Example University`
-- `YOUR_ID`
-- `0000-0000-0000-0000`
-- `Alex Chen`
-- `陈明远`
+## 4. Environment variables are configured
 
-### 5. Environment variable checks
+Reference:
 
-Reference: [../.env.example](../.env.example)
+- [../.env.example](../.env.example)
+
+Main checks:
 
 - `NEXT_PUBLIC_CONTACT_EMAIL_B64` is set
-- Set `NEXT_PUBLIC_CONTACT_MAILTO_SUBJECT` if needed
-- Set `NEXT_PUBLIC_REPOSITORY_URL` if needed
+- `NEXT_PUBLIC_CONTACT_MAILTO_SUBJECT` is set if needed
+- `NEXT_PUBLIC_REPOSITORY_URL` is set if needed
 
-### 6. URL checks
+## 5. Placeholder content has been removed
+
+Search and replace at least:
+
+- `Alex Chen`
+- `陈明远`
+- `Example University`
+- `your-handle`
+- `YOUR_ID`
+- `0000-0000-0000-0000`
+- `example.com`
+
+## 6. URL checks
+
+At minimum, open:
 
 - `/`
 - `/en`
-- `/en/`
 - `/zh`
-- `/zh/`
 - `/en/research`
 - `/zh/research`
 - `/en/projects`
 - `/zh/projects`
+- `/en/publications`
+- `/zh/publications`
 - `/en/contact`
 - `/zh/contact`
 - `/en/cv`
 - `/zh/cv`
 
-Requirement: no 404, first-open language is correct, and contact reveal/CV download work.
+If you use single-language mode, also confirm:
 
-### 7. Platform checks
+- the unused locale is not generated
+- the language switcher is hidden
 
-Vercel:
+## 7. Feature checks
 
-- repository import works
-- environment variables configured
-- first-open language is correct
+### Contact page
 
-EdgeOne:
+- email can be revealed
+- copy button works
+- mail client opens correctly
 
-- run `EDGEONE=1 npm run build`
+### CV
+
+- CV download link is correct
+
+### External links
+
+- GitHub / Scholar / ORCID and other links are correct
+
+### Theme
+
+- first visit follows system light/dark preference
+- manual switching is remembered
+
+## 8. If you use a local environment
+
+Recommended commands:
+
+```bash
+npm ci
+npm run lint
+npm run build
+```
+
+Requirement:
+
+- no errors
+
+## 9. Platform-specific checks
+
+### Vercel
+
+- repository import succeeds
+- environment variables are configured
+- first-visit locale behavior is correct
+
+### EdgeOne
+
+- build command uses `EDGEONE=1 npm run build`
 - `/en -> /en/` works
 - `/zh -> /zh/` works
-- automatic URL rewrite rules exist in [../edgeone.json](../edgeone.json)
+- [../edgeone.json](../edgeone.json) still exists
 
-### 8. Final repository checks
+## 10. Final repository check
 
-- keep [../package.json](../package.json)
-- keep [../package-lock.json](../package-lock.json)
-- keep [../next-env.d.ts](../next-env.d.ts)
-- keep [../.nvmrc](../.nvmrc)
-- keep [../edgeone.json](../edgeone.json)
-- do not commit private data or temporary debug files
+These files should stay:
 
-Template publishing setup: [GITHUB-TEMPLATE.md](./GITHUB-TEMPLATE.md)
+- [../package.json](../package.json)
+- [../package-lock.json](../package-lock.json)
+- [../next.config.mjs](../next.config.mjs)
+- [../proxy.ts](../proxy.ts)
+- [../edgeone.json](../edgeone.json)
+- [../.nvmrc](../.nvmrc)
+- [../.env.example](../.env.example)
+
+These should not be committed:
+
+- `.env`
+- `.env.local`
+- `node_modules`
+- `.next`
+- `out`
+- temporary debug files
