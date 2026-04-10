@@ -1,53 +1,39 @@
-# Deployment Guide / 部署指南
+# 部署指南 / Deployment Guide
 
-本项目支持两条部署路径：
+[ 🇺🇸 English](#en-start) | [ 🇨🇳 中文](#zh-start)
 
-1. Vercel（推荐）
-2. EdgeOne Pages（静态导出）
+<a id="zh-start"></a>
 
-下面内容按“第一次部署的人”来写，你可以直接照做。
+### 1. 部署前先看这些文件
 
-## 1. 先确认这些关键文件
-
-- Node 版本基线： [../.nvmrc](../.nvmrc)
-- 构建行为： [../next.config.mjs](../next.config.mjs)
-- 请求时语言跳转： [../proxy.ts](../proxy.ts)
-- 静态导出兜底跳转： [../app/(redirects)](../app/%28redirects%29)
+- 构建配置： [../next.config.mjs](../next.config.mjs)
+- 访问时自动进入对应语言页面： [../proxy.ts](../proxy.ts)
+- 静态部署时自动进入对应语言页面： [../app/(redirects)](../app/%28redirects%29)
 - EdgeOne 配置： [../edgeone.json](../edgeone.json)
-- 语言模式配置： [../content/site.json](../content/site.json)
+- 语言参数： [../content/site.json](../content/site.json)
 
-## 2. Vercel 部署（推荐）
+### 2. Vercel 部署（推荐）
 
-为什么推荐：
+步骤：
 
-- 配置最少
-- 标准 Next.js 行为
-- `proxy.ts` 可以在请求阶段处理语言入口跳转
-
-部署步骤：
-
-1. 把仓库推送到 GitHub
+1. 把仓库推到 GitHub
 2. 在 Vercel 导入仓库
 3. Framework 保持 `Next.js`
-4. 在 Vercel 项目设置里填环境变量
-5. 点击 Deploy
+4. 配置环境变量
+5. 部署
 
-环境变量建议：
+变量参考： [../.env.example](../.env.example)
 
 - 必填：`NEXT_PUBLIC_CONTACT_EMAIL_B64`
 - 选填：`NEXT_PUBLIC_CONTACT_MAILTO_SUBJECT`
 - 选填：`NEXT_PUBLIC_REPOSITORY_URL`
 
-变量说明可直接看： [../.env.example](../.env.example)
+说明：
 
-注意：
+- 不需要 `vercel.json`
+- 默认是标准 Next.js 输出
 
-- 本模板不需要 `vercel.json`
-- 默认走标准 Next.js 输出，不是 `output: "export"`
-
-## 3. EdgeOne Pages 部署（可选）
-
-适合你已经确定要用 EdgeOne Pages 的情况。
+### 3. EdgeOne Pages 部署（静态导出）
 
 构建命令：
 
@@ -55,21 +41,17 @@
 EDGEONE=1 npm run build
 ```
 
-模板已内置这些关键兼容：
+关键点：
 
-- 静态导出目录 `out`
-- 顶层语言入口重定向 `/en -> /en/`、`/zh -> /zh/`
-- `trailingSlash: true`（仅 EdgeOne 构建路径生效）
+- 输出目录是 `out`
+- 会把 `/en` 自动改成 `/en/`，把 `/zh` 自动改成 `/zh/`
+- `EDGEONE=1` 时使用 `trailingSlash: true`
 
-对应配置文件：
+对应文件： [../next.config.mjs](../next.config.mjs) 和 [../edgeone.json](../edgeone.json)
 
-- [../next.config.mjs](../next.config.mjs)
-- [../edgeone.json](../edgeone.json)
-- [../app/(redirects)](../app/%28redirects%29)
+### 4. 语言默认策略
 
-## 4. 语言默认策略一定要对齐
-
-配置文件： [../content/site.json](../content/site.json)
+文件： [../content/site.json](../content/site.json)
 
 ```json
 {
@@ -82,17 +64,17 @@ EDGEONE=1 npm run build
 
 规则：
 
-- `primaryLocale: "en"`：固定英文默认，不启用浏览器语言识别
-- `primaryLocale: "zh"`：固定中文默认，不启用浏览器语言识别
-- `primaryLocale: ""`：只有留空才启用浏览器语言识别；识别不到时回退英文
+- `primaryLocale: "en"`：固定英文默认，不识别浏览器语言
+- `primaryLocale: "zh"`：固定中文默认，不识别浏览器语言
+- `primaryLocale: ""`：仅留空时识别浏览器语言
 
 优先级：
 
-1. 先看 `locale` cookie
-2. 无 cookie 且 `primaryLocale` 为空时，才看浏览器语言
-3. 仍无法判断则回退英文
+1. `locale` cookie
+2. 浏览器语言（仅 `primaryLocale` 为空时）
+3. 回退英文
 
-## 5. 部署后必测路径
+### 5. 部署后检查页面地址
 
 - `/`
 - `/en`
@@ -104,36 +86,124 @@ EDGEONE=1 npm run build
 - `/en/contact`
 - `/zh/contact`
 
-重点检查：
+检查点：
 
-- 顶层语言入口是否稳定跳转
-- 语言路由是否出现 404
-- 头像、样式、脚本等静态资源是否正常
-- 简历下载是否正常
-- 联系页邮箱 reveal 是否正常
+- 首次打开时页面语言是否符合预期
+- 是否有 404
+- 静态资源是否正常
+- CV 下载和邮箱 reveal 是否正常
 
-## 6. 常见问题
+### 6. 常见问题
 
-### 问题 1：EdgeOne 上 `/en` 可以访问但 `/en/` 才正常
+问题：EdgeOne 上 `/en` 与 `/en/` 打开结果不一致  
+处理：确认 [../edgeone.json](../edgeone.json) 的 308 设置和 [../next.config.mjs](../next.config.mjs) 的 `trailingSlash`。
 
-这是静态托管常见路径差异。请确认：
+问题：默认语言和预期不一致  
+处理：检查 [../content/site.json](../content/site.json) 的 `primaryLocale`。
 
-- [../edgeone.json](../edgeone.json) 的 308 重定向规则存在
-- [../next.config.mjs](../next.config.mjs) 在 `EDGEONE=1` 时启用了 `trailingSlash`
+问题：Vercel 改了环境变量但页面没变  
+处理：重新部署一次。
 
-### 问题 2：语言入口与预期不一致
+---
 
-请先检查 [../content/site.json](../content/site.json) 里的 `primaryLocale`：
+<a id="en-start"></a>
 
-- 不是空字符串时，不会进行浏览器语言识别
+### 1. Check these files before deployment
 
-### 问题 3：Vercel 环境变量改完不生效
+- Build config: [../next.config.mjs](../next.config.mjs)
+- Automatic language-page entry during request handling: [../proxy.ts](../proxy.ts)
+- Automatic language-page entry for static deployments: [../app/(redirects)](../app/%28redirects%29)
+- EdgeOne config: [../edgeone.json](../edgeone.json)
+- Locale parameters: [../content/site.json](../content/site.json)
 
-请重新触发部署。前端公开变量需要重新构建后才会生效。
+### 2. Vercel deployment (recommended)
 
-## Official References
+Steps:
 
-- [Vercel](https://vercel.com)
-- [Next.js on Vercel](https://vercel.com/docs/frameworks/nextjs)
-- [Tencent EdgeOne Pages](https://edgeone.ai/products/pages)
-- [edgeone.json Configuration Guide](https://pages.edgeone.ai/document/edgeone-json)
+1. Push repository to GitHub
+2. Import repository in Vercel
+3. Keep framework as `Next.js`
+4. Configure environment variables
+5. Deploy
+
+Variables: [../.env.example](../.env.example)
+
+- Required: `NEXT_PUBLIC_CONTACT_EMAIL_B64`
+- Optional: `NEXT_PUBLIC_CONTACT_MAILTO_SUBJECT`
+- Optional: `NEXT_PUBLIC_REPOSITORY_URL`
+
+Notes:
+
+- `vercel.json` is not required
+- Standard Next.js output is used
+
+### 3. EdgeOne Pages deployment (static export)
+
+Build command:
+
+```bash
+EDGEONE=1 npm run build
+```
+
+Key points:
+
+- output directory is `out`
+- `/en` is automatically changed to `/en/`, and `/zh` is automatically changed to `/zh/`
+- `trailingSlash: true` is enabled for `EDGEONE=1`
+
+See [../next.config.mjs](../next.config.mjs) and [../edgeone.json](../edgeone.json).
+
+### 4. Default locale strategy
+
+File: [../content/site.json](../content/site.json)
+
+```json
+{
+  "i18n": {
+    "mode": "bilingual",
+    "primaryLocale": ""
+  }
+}
+```
+
+Rules:
+
+- `primaryLocale: "en"`: first visit is fixed to English, browser-language detection is disabled
+- `primaryLocale: "zh"`: first visit is fixed to Chinese, browser-language detection is disabled
+- `primaryLocale: ""`: browser-language detection runs only when empty
+
+Priority:
+
+1. `locale` cookie
+2. browser language (only when `primaryLocale` is empty)
+3. fallback to English
+
+### 5. URLs to test after deployment
+
+- `/`
+- `/en`
+- `/en/`
+- `/zh`
+- `/zh/`
+- `/en/research`
+- `/zh/research`
+- `/en/contact`
+- `/zh/contact`
+
+Checks:
+
+- first-open language should match your expected behavior
+- no 404
+- static assets load
+- CV download and email reveal
+
+### 6. Common issues
+
+Issue: `/en` and `/en/` behave differently on EdgeOne  
+Fix: verify 308 rules in [../edgeone.json](../edgeone.json) and `trailingSlash` in [../next.config.mjs](../next.config.mjs).
+
+Issue: default locale is not expected  
+Fix: verify `primaryLocale` in [../content/site.json](../content/site.json).
+
+Issue: Vercel env var changed but page did not update  
+Fix: redeploy.

@@ -29,7 +29,7 @@
 
 | 参数 | 可选值 | 作用 | 建议 |
 | --- | --- | --- | --- |
-| `i18n.mode` | `bilingual` / `en-only` / `zh-only` | 控制生成哪些语言路由 | 双语站用 `bilingual` |
+| `i18n.mode` | `bilingual` / `en-only` / `zh-only` | 控制网站页面使用哪些语言（双语或单语） | 双语站用 `bilingual` |
 | `i18n.primaryLocale` | `en` / `zh` / `""` | 控制首次访问时默认语言策略 | 想启用浏览器语言识别就留空 `""` |
 
 `primaryLocale` 的规则务必看清：
@@ -102,16 +102,17 @@ echo -n "hi@example.com" | base64
 - 想要配置最少，优先用 Vercel：看 [部署指南](./docs/DEPLOYMENT.md)
 - 想要 EdgeOne 静态导出：看 [部署指南](./docs/DEPLOYMENT.md)
 
-这个模板已处理两条部署路径的语言入口兼容：
+这个模板已经处理好了两种部署方式下的语言页面打开方式：
 
-- 请求时跳转： [proxy.ts](./proxy.ts)
-- 静态导出兜底跳转： [app/(redirects)](./app/%28redirects%29)
-- EdgeOne 构建和重定向： [edgeone.json](./edgeone.json)
+- 访问时自动进入对应语言页面： [proxy.ts](./proxy.ts)
+- 静态部署时自动进入对应语言页面： [app/(redirects)](./app/%28redirects%29)
+- EdgeOne 页面地址兼容设置： [edgeone.json](./edgeone.json)
 
 ## 文档导航
 
 - 安装与报错处理： [docs/INSTALLATION.md](./docs/INSTALLATION.md)
 - 部署到 Vercel / EdgeOne： [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md)
+- GitHub 与 Template 发布设置： [docs/GITHUB-TEMPLATE.md](./docs/GITHUB-TEMPLATE.md)
 - 每个内容文件怎么改： [docs/CONTENT-MANAGEMENT.md](./docs/CONTENT-MANAGEMENT.md)
 - 发布前逐项检查： [docs/PUBLISH-CHECKLIST.md](./docs/PUBLISH-CHECKLIST.md)
 - 可选自动化（GitHub Actions）： [docs/WORKFLOW-OPTIMIZATION.md](./docs/WORKFLOW-OPTIMIZATION.md)

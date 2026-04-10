@@ -1,11 +1,13 @@
-# Optional Automation Guide / 可选自动化指南
+# 可选自动化指南 / Optional Automation Guide
 
-这份文档讲的是“要不要开自动化”。如果你只想手动维护内容，可以完全跳过。
+[ 🇺🇸 English](#en-start) | [ 🇨🇳 中文](#zh-start)
 
-## 1. 自动化会改哪些文件
+<a id="zh-start"></a>
 
-- 首页动态： [../content/updates.json](../content/updates.json)
-- 项目星标： [../content/projects.json](../content/projects.json)
+### 1. 自动化会改哪些内容
+
+- [../content/updates.json](../content/updates.json)
+- [../content/projects.json](../content/projects.json)
 
 工作流文件： [../.github/workflows/update-content.yml](../.github/workflows/update-content.yml)
 
@@ -14,100 +16,130 @@
 - [../scripts/update-recent-updates.mjs](../scripts/update-recent-updates.mjs)
 - [../scripts/update-project-stars.mjs](../scripts/update-project-stars.mjs)
 
-## 2. 什么时候建议开启
+### 2. 什么时候开，什么时候不开
 
 建议开启：
 
-- 你经常提交代码，想自动更新 Recent Updates
-- 你希望项目卡片上的 GitHub stars 自动刷新
+- 你经常提交代码，想自动更新首页动态
+- 你希望项目 stars 自动刷新
 
 建议关闭：
 
-- 你希望所有内容都手动审核后再改
-- 你不希望出现自动提交
+- 你希望所有内容都手动维护
+- 你不希望自动提交
 
-## 3. 前置条件
+### 3. 前置条件
 
-- 仓库托管在 GitHub
+- 仓库在 GitHub
 - GitHub Actions 已启用
-- 默认 `github.token` 具备 `contents: write`
+- `github.token` 有 `contents: write` 权限
 
-默认模板配置不需要额外 Personal Access Token。
+### 4. 触发方式
 
-## 4. 触发方式
-
-- 定时触发（schedule）
+- 定时触发
 - 手动触发（workflow_dispatch）
 
-你可以在 GitHub 的 Actions 页面手动执行一次，确认流程是否符合预期。
+### 5. 脚本行为
 
-## 5. 自动更新逻辑说明
-
-### 5.1 Recent Updates
-
-脚本： [../scripts/update-recent-updates.mjs](../scripts/update-recent-updates.mjs)
-
-行为：
+Recent Updates 脚本： [../scripts/update-recent-updates.mjs](../scripts/update-recent-updates.mjs)
 
 - 读取近期提交
-- 过滤掉机器人风格提交
-- 写入中英文更新到 [../content/updates.json](../content/updates.json)
+- 写入 [../content/updates.json](../content/updates.json)
 
-脚本依赖 `GITHUB_REPOSITORY` 环境变量。GitHub Actions 会自动提供；本地运行时要手动传入。
+项目 stars 脚本： [../scripts/update-project-stars.mjs](../scripts/update-project-stars.mjs)
+
+- 读取项目里的 GitHub 仓库链接
+- 回写 `metrics.stars`
+
+本地执行 recent updates 示例：
 
 ```bash
 GITHUB_REPOSITORY=your-name/your-repo node scripts/update-recent-updates.mjs
 ```
 
-### 5.2 项目 GitHub Stars
+### 6. 常见问题
 
-脚本： [../scripts/update-project-stars.mjs](../scripts/update-project-stars.mjs)
+问题：工作流运行了但没有新提交  
+原因：内容没有变化。  
+处理：无需操作。
 
-行为：
+问题：Recent Updates 同步失败  
+处理：检查 `GITHUB_REPOSITORY`、仓库可访问性、Actions 权限。
 
-- 扫描项目链接中的 GitHub 仓库地址
-- 调用 GitHub API 获取星标数
-- 回写到 `metrics.stars`
+问题：某项目 stars 没更新  
+处理：检查是否填写有效 GitHub 仓库链接。
 
-只有填写了有效 GitHub 链接的项目条目才会被更新。
+问题：不想自动提交  
+处理：禁用 [../.github/workflows/update-content.yml](../.github/workflows/update-content.yml)。
 
-## 6. 常见自动提交信息
+---
 
-- `chore: refresh updates and project metrics`
-- `chore: refresh recent updates`
-- `chore: refresh project stars`
-- `chore: refresh content data`
+<a id="en-start"></a>
 
-## 7. 故障排查
+### 1. What automation updates
 
-### 问题 1：工作流执行了，但没有新提交
+- [../content/updates.json](../content/updates.json)
+- [../content/projects.json](../content/projects.json)
 
-通常是脚本运行后内容没有变化，不会创建空提交。
+Workflow file: [../.github/workflows/update-content.yml](../.github/workflows/update-content.yml)
 
-### 问题 2：Recent Updates 同步失败
+Scripts:
 
-检查：
+- [../scripts/update-recent-updates.mjs](../scripts/update-recent-updates.mjs)
+- [../scripts/update-project-stars.mjs](../scripts/update-project-stars.mjs)
 
-- `GITHUB_REPOSITORY` 是否可用
-- 仓库是否可访问
-- Actions 权限是否可读取提交记录
+### 2. When to enable or disable
 
-### 问题 3：某个项目星标没有更新
+Enable if:
 
-检查：
+- you commit frequently and want auto-updated recent activity
+- you want project stars refreshed automatically
 
-- 项目是否填写了有效 GitHub 仓库链接
-- 仓库是否公开，或 token 权限是否足够
+Disable if:
 
-### 问题 4：完全不想要自动提交
+- you want full manual control
+- you do not want automation commits
 
-最简单做法：在 GitHub Actions 中禁用这个工作流。
+### 3. Requirements
 
-## English Quick Notes
+- repository is on GitHub
+- GitHub Actions is enabled
+- `github.token` has `contents: write`
 
-The automation workflow is optional. It updates:
+### 4. Triggers
 
-1. Recent updates feed in [../content/updates.json](../content/updates.json)
-2. GitHub stars in [../content/projects.json](../content/projects.json)
+- schedule
+- manual `workflow_dispatch`
 
-If you prefer full manual control, disable [../.github/workflows/update-content.yml](../.github/workflows/update-content.yml).
+### 5. Script behavior
+
+Recent updates script: [../scripts/update-recent-updates.mjs](../scripts/update-recent-updates.mjs)
+
+- reads recent commits
+- writes [../content/updates.json](../content/updates.json)
+
+Project stars script: [../scripts/update-project-stars.mjs](../scripts/update-project-stars.mjs)
+
+- reads GitHub repository links in project items
+- writes `metrics.stars`
+
+Local example for recent updates:
+
+```bash
+GITHUB_REPOSITORY=your-name/your-repo node scripts/update-recent-updates.mjs
+```
+
+### 6. Common issues
+
+Issue: workflow runs but no commit  
+Cause: no content changes.  
+Action: none.
+
+Issue: recent updates sync fails  
+Action: check `GITHUB_REPOSITORY`, repository access, and Actions permission.
+
+Issue: stars not updated for one project  
+Action: verify the project has a valid GitHub repository URL.
+
+Issue: no bot commits wanted  
+Action: disable [../.github/workflows/update-content.yml](../.github/workflows/update-content.yml).

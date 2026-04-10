@@ -30,7 +30,7 @@ Parameter meanings:
 
 | Parameter | Values | Behavior | Recommendation |
 | --- | --- | --- | --- |
-| `i18n.mode` | `bilingual` / `en-only` / `zh-only` | Controls which locale routes are generated | Use `bilingual` for dual-language sites |
+| `i18n.mode` | `bilingual` / `en-only` / `zh-only` | Controls whether your pages are bilingual or single-language | Use `bilingual` for dual-language sites |
 | `i18n.primaryLocale` | `en` / `zh` / `""` | Controls first-visit default locale policy | Keep `""` if you want browser-language detection |
 
 Read this rule carefully:
@@ -39,7 +39,7 @@ Read this rule carefully:
 - `primaryLocale: "zh"`: first visit is fixed to Chinese, browser-language detection is disabled
 - `primaryLocale: ""`: browser-language detection is enabled only in this case; unresolved detection falls back to English
 
-Additional routing logic:
+Additional language selection logic:
 
 - `locale` cookie is checked first
 - if cookie exists, the user's last manual choice always wins
@@ -99,16 +99,17 @@ echo -n "hi@example.com" | base64
 - Minimal configuration path: [Vercel steps](./docs/DEPLOYMENT.md)
 - Static-export path on EdgeOne: [EdgeOne steps](./docs/DEPLOYMENT.md)
 
-Locale compatibility is already handled by these files:
+Language-page behavior is already handled by these files:
 
-- request-time redirects: [proxy.ts](./proxy.ts)
-- static fallback redirects: [app/(redirects)](./app/%28redirects%29)
-- EdgeOne build and redirect rules: [edgeone.json](./edgeone.json)
+- automatic language-page entry during request handling: [proxy.ts](./proxy.ts)
+- automatic language-page entry for static deployments: [app/(redirects)](./app/%28redirects%29)
+- EdgeOne URL compatibility settings: [edgeone.json](./edgeone.json)
 
 ## Documentation Index
 
 - Installation and troubleshooting: [docs/INSTALLATION.md](./docs/INSTALLATION.md)
 - Deployment on Vercel / EdgeOne: [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md)
+- GitHub and template publishing setup: [docs/GITHUB-TEMPLATE.md](./docs/GITHUB-TEMPLATE.md)
 - Field-by-field content editing: [docs/CONTENT-MANAGEMENT.md](./docs/CONTENT-MANAGEMENT.md)
 - Pre-publish checks: [docs/PUBLISH-CHECKLIST.md](./docs/PUBLISH-CHECKLIST.md)
 - Optional GitHub Actions automation: [docs/WORKFLOW-OPTIMIZATION.md](./docs/WORKFLOW-OPTIMIZATION.md)

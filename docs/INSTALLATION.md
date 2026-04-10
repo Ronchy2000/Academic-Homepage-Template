@@ -1,16 +1,18 @@
-# Installation Guide / 安装指南
+# 安装指南 / Installation Guide
 
-这份文档给第一次接触仓库的用户使用。目标只有一件事：你能稳定跑起来，并知道报错时该怎么处理。
+[ 🇺🇸 English](#en-start) | [ 🇨🇳 中文](#zh-start)
 
-## 1. 先看这几个文件
+<a id="zh-start"></a>
 
-- Node 版本： [../.nvmrc](../.nvmrc)
-- 依赖与脚本： [../package.json](../package.json)
-- 锁文件： [../package-lock.json](../package-lock.json)
+### 1. 先确认环境
 
-建议统一使用 Node `22.x`，这样和 Vercel、EdgeOne 的默认部署基线一致。
+- Node 版本看 [../.nvmrc](../.nvmrc)
+- 依赖看 [../package.json](../package.json)
+- 锁文件看 [../package-lock.json](../package-lock.json)
 
-## 2. 第一次启动（推荐命令）
+建议统一 Node `22.x`。
+
+### 2. 首次启动命令
 
 ```bash
 nvm install
@@ -19,40 +21,33 @@ npm ci
 npm run dev
 ```
 
-本地访问： `http://localhost:3000`
+本地地址：`http://localhost:3000`
 
-如果你刚刚新增了依赖，或者明确在维护锁文件，请看下面第 4 节。
+### 3. `npm ci` 和 `npm install` 怎么选
 
-## 3. `npm ci` 与 `npm install` 怎么选
-
-| 你的场景 | 推荐命令 |
+| 场景 | 命令 |
 | --- | --- |
-| 只是拉代码并启动项目 | `npm ci` |
-| 你修改了依赖（增删包、升级版本） | `npm install` |
-| 只想刷新锁文件，不真正安装所有依赖 | `npm install --package-lock-only` |
+| 只拉代码并运行 | `npm ci` |
+| 你改了依赖 | `npm install` |
+| 只刷新 lockfile | `npm install --package-lock-only` |
 
-简单记法：
-
-- 普通使用者优先 `npm ci`
-- 维护依赖的人用 `npm install`
-
-## 4. `npm ci` 报错时怎么处理
+### 4. `npm ci` 失败时怎么处理
 
 常见报错：
 
 - `package.json and package-lock.json are not in sync`
 - `Invalid: lock file's ... does not satisfy ...`
 
-处理步骤：
+处理：
 
 ```bash
 npm install --package-lock-only
 npm ci
 ```
 
-如果你是仓库维护者，请把更新后的 [../package-lock.json](../package-lock.json) 一并提交。
+如果你维护仓库，请提交更新后的 [../package-lock.json](../package-lock.json)。
 
-## 5. 启动后做三个验证
+### 5. 启动后检查
 
 ```bash
 npm run lint
@@ -60,34 +55,83 @@ npm run build
 npm run dev
 ```
 
-这三个命令分别验证：
+### 6. 常见问题
 
-- 语法和规范检查
-- 生产构建是否通过
-- 本地开发服务是否可用
+问题：`eslint: command not found`  
+原因：依赖没装完。  
+处理：重新执行 `npm ci`。
 
-## 6. 常见问题
+问题：Node 23/24 有 engine warning  
+原因：模板基线是 Node 22。  
+处理：切回 Node 22。
 
-### 问题 1：`eslint: command not found`
+问题：不知道语言配置在哪改  
+处理：改 [../content/site.json](../content/site.json)，说明见 [CONTENT-MANAGEMENT.md](./CONTENT-MANAGEMENT.md)。
 
-原因：依赖还没安装完整。  
-解决：重新执行 `npm ci`（或维护场景用 `npm install`）。
+---
 
-### 问题 2：Node 23/24 出现 engine warning
+<a id="en-start"></a>
 
-原因：模板按 Node 22 作为统一基线。  
-解决：切换回 Node 22（`nvm use`）。
+### 1. Check environment files first
 
-### 问题 3：我应该改哪个文件来配置语言模式
+- Node version: [../.nvmrc](../.nvmrc)
+- Dependencies and scripts: [../package.json](../package.json)
+- Lockfile: [../package-lock.json](../package-lock.json)
 
-直接改 [../content/site.json](../content/site.json)。  
-参数说明见 [./CONTENT-MANAGEMENT.md](./CONTENT-MANAGEMENT.md) 的 i18n 小节。
+Use Node `22.x`.
 
-## English Quick Notes
+### 2. First run commands
 
-If you are using this template for the first time:
+```bash
+nvm install
+nvm use
+npm ci
+npm run dev
+```
 
-1. Use Node `22.x` from [../.nvmrc](../.nvmrc)
-2. Run `nvm install && nvm use && npm ci && npm run dev`
-3. If `npm ci` fails due to lock mismatch, run `npm install --package-lock-only` once, then retry `npm ci`
-4. For dependency maintainers: use `npm install` when changing packages
+Local URL: `http://localhost:3000`
+
+### 3. Command choice
+
+| Scenario | Command |
+| --- | --- |
+| Fresh clone and run | `npm ci` |
+| You changed dependencies | `npm install` |
+| Refresh lockfile only | `npm install --package-lock-only` |
+
+### 4. If `npm ci` fails
+
+Common errors:
+
+- `package.json and package-lock.json are not in sync`
+- `Invalid: lock file's ... does not satisfy ...`
+
+Fix:
+
+```bash
+npm install --package-lock-only
+npm ci
+```
+
+If you maintain the repository, commit updated [../package-lock.json](../package-lock.json).
+
+### 5. Verify startup
+
+```bash
+npm run lint
+npm run build
+npm run dev
+```
+
+### 6. Common issues
+
+Issue: `eslint: command not found`  
+Cause: dependencies not installed.  
+Fix: run `npm ci` again.
+
+Issue: engine warning on Node 23/24  
+Cause: baseline is Node 22.  
+Fix: switch to Node 22.
+
+Issue: where to configure locale mode  
+Fix: edit [../content/site.json](../content/site.json), details in [CONTENT-MANAGEMENT.md](./CONTENT-MANAGEMENT.md).
