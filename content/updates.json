@@ -8,6 +8,13 @@
   "en": {
     "updates": [
       {
+        "date": "2026-04-20",
+        "type": "Commit",
+        "title": "chore: align node runtime to 24",
+        "summary": "Authored by ronchy",
+        "link": "https://github.com/Ronchy2000/Academic-Homepage-Template/commit/d62558af994c2df311c4a84f20d406fd487432cc"
+      },
+      {
         "date": "2026-04-10",
         "type": "Commit",
         "title": "docs: 优化文档",
@@ -46,6 +53,13 @@
   },
   "zh": {
     "updates": [
+      {
+        "date": "2026-04-20",
+        "type": "提交",
+        "title": "chore: align node runtime to 24",
+        "summary": "由 ronchy 提交",
+        "link": "https://github.com/Ronchy2000/Academic-Homepage-Template/commit/d62558af994c2df311c4a84f20d406fd487432cc"
+      },
       {
         "date": "2026-04-10",
         "type": "提交",
